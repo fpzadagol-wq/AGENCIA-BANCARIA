@@ -206,6 +206,35 @@
       .topbar{padding:0 12px}
       .breadcrumb{font-size:10px}
     }
+  
+    .heading-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+    .repeat-section{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fbfdfb;display:grid;gap:10px}
+    .repeat-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.repeat-head strong{font-size:11px;color:#294238}
+    .repeat-note{font-size:9px;color:#8a9791;line-height:1.5}
+    .repeat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr)) auto;gap:8px;align-items:center}
+    .repeat-row input,.repeat-row select{width:100%;height:36px;border:1px solid #e1e9e4;border-radius:8px;padding:0 9px;font-size:10px;background:#fff;color:#40574b;min-width:0}
+    .repeat-row .remove-row{width:32px;height:32px;border:1px solid #f0dddd;background:#fff6f6;color:#b34b4b;border-radius:8px;font-size:16px}
+    .profile-upload{display:flex;gap:15px;align-items:center;padding:13px;border:1px dashed #cbdad1;border-radius:12px;background:#fbfdfb}
+    .profile-preview{width:66px;height:66px;flex:0 0 auto;border-radius:18px;background:#e7f2eb;color:#28654c;display:grid;place-items:center;font-size:18px;font-weight:800;overflow:hidden}
+    .profile-preview img,.client-avatar-img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
+    .file-chip{font-size:10px;color:#51665a;background:#f1f6f2;padding:8px 10px;border-radius:8px;display:flex;justify-content:space-between;gap:10px}
+    .security-callout{background:#fff6e8;border:1px solid #f3e2c4;color:#815e27;padding:11px 12px;border-radius:10px;font-size:10px;line-height:1.55}
+    .security-callout strong{display:block;margin-bottom:3px}
+    .locked-field{background:#f2f4f3!important;color:#9aa59f!important;cursor:not-allowed}
+    .editor-toolbar{display:flex;gap:5px;flex-wrap:wrap;padding:8px;border:1px solid #e3ebe6;border-bottom:0;border-radius:9px 9px 0 0;background:#f8faf9}
+    .editor-tool{height:29px;min-width:30px;border:1px solid #e3ebe6;background:#fff;border-radius:6px;color:#43584c;font-size:11px;font-weight:700;padding:0 7px}
+    .editor-tool:hover{background:#eaf4ed}.editor-color{width:30px;height:29px;border:1px solid #e3ebe6;padding:2px;background:#fff;border-radius:6px}
+    .rich-editor{min-height:210px;max-height:420px;overflow:auto;border:1px solid #e3ebe6;border-radius:0 0 9px 9px;padding:14px;background:#fff;font-size:12px;line-height:1.65;color:#30463a}
+    .rich-editor:focus{outline:2px solid rgba(37,130,99,.2);outline-offset:1px}
+    .email-preview{background:#f6f8f7;padding:20px;border-radius:12px}
+    .email-paper{max-width:620px;margin:auto;background:white;border:1px solid #e5ece8;border-radius:10px;overflow:hidden}
+    .email-paper-head{background:#123c32;color:white;padding:18px 22px;font-size:12px;font-weight:800;letter-spacing:.08em}
+    .email-paper-meta{padding:15px 22px;border-bottom:1px solid #eef2ef;font-size:10px;line-height:1.8;color:#627168}
+    .email-paper-body{padding:22px;font-size:12px;line-height:1.7;color:#304238;min-height:130px}
+    .email-config-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .email-state{font-size:10px;color:#9a6d25;background:#fff6e7;border-radius:8px;padding:9px 11px;line-height:1.5}
+    @media(max-width:760px){.heading-actions{width:100%;justify-content:flex-start}.heading-actions .btn{flex:1}.repeat-row{grid-template-columns:1fr 1fr}.repeat-row .remove-row{grid-column:1/-1;width:100%}.email-config-grid{grid-template-columns:1fr}}
+    @media(max-width:460px){.profile-upload{align-items:flex-start}.heading-actions .btn{font-size:9px;padding:9px 8px}}
   </style>
 </head>
 <body>
@@ -223,6 +252,7 @@
       <button class="nav-link" data-page="clients" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 20v-1.5a4.5 4.5 0 0 0-4.5-4.5h-5A4.5 4.5 0 0 0 2 18.5V20"/><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 1 0 0-8m5 17v-1.5a4.5 4.5 0 0 0-3.5-4.4"/></svg>Clientes</button>
       <button class="nav-link" data-page="service" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v13H7l-3 3V4Z"/><path d="M8 9h8M8 13h5"/></svg>Atendimento</button>
       <button class="nav-link" data-page="history" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Histórico</button>
+      <button class="nav-link" data-page="emails" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Envio de e-mails</button>
       <div class="nav-label" style="margin-top:23px">Gestão</div>
       <button class="nav-link" data-page="reports" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5m0 14h17"/><path d="m7 15 4-4 3 2 6-7"/></svg>Relatórios</button>
       <button class="nav-link" data-page="settings" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.5.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.5-.9l-1.7.7-1.4-2.4 1.4-1.1A7 7 0 0 1 7.5 14l-1.8-.3v-2.8l1.8-.3a7 7 0 0 1 .7-1.7L6.8 7.5l1.4-2.4 1.7.7a8 8 0 0 1 1.5-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.5.9l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 .7 1.7l1.8.3v2.8l-1.8.3a7 7 0 0 1-.7 1.3Z"/></svg>Configurações</button>
@@ -282,11 +312,14 @@
       </section>
 
       <section class="page" id="page-clients">
-        <div class="page-heading"><div><div class="eyebrow">Relacionamento</div><h1>Clientes</h1><p class="subheading">Consulte e gerencie os clientes cadastrados na agência.</p></div><button class="btn btn-primary" type="button" data-action="open-client"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Novo cliente</button></div>
+        <div class="page-heading"><div><div class="eyebrow">Relacionamento</div><h1>Clientes</h1><p class="subheading">Consulte e gerencie os clientes cadastrados na agência.</p></div><div class="heading-actions">
+          <button class="btn btn-secondary" type="button" data-action="export-clients-image">Imagem</button><button class="btn btn-secondary" type="button" data-action="export-clients-pdf">PDF</button><button class="btn btn-secondary" type="button" data-action="export-clients-xlsx">Excel</button><button class="btn btn-secondary" type="button" data-action="export-clients-txt">Bloco de notas</button><button class="btn btn-primary" type="button" data-action="open-client">+ Novo cliente</button>
+        </div></div>
         <div class="table-panel">
           <div class="table-toolbar"><div class="toolbar-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input class="control" id="clientSearch" type="search" placeholder="Buscar por nome ou e-mail..."></div><span class="small" id="clientCount" style="font-size:10px;color:#8a9791">0 clientes</span></div>
-          <div class="table-wrap"><table><thead><tr><th>Cliente</th><th>E-mail</th><th>Telefone</th><th>Cadastro</th><th>Ações</th></tr></thead><tbody id="clientsTable"></tbody></table></div>
+          <div class="table-wrap"><table><thead><tr><th>Cliente</th><th>E-mails</th><th>Telefone</th><th>Bancos</th><th>Cadastro</th><th>Ações</th></tr></thead><tbody id="clientsTable"></tbody></table></div>
         </div>
+        <p class="footer-note">Exportações incluem dados de contato e nomes das instituições. CPF, contas completas, cartões e anexos são excluídos.</p>
       </section>
 
       <section class="page" id="page-service">
@@ -329,6 +362,34 @@
         <p class="footer-note">Os indicadores refletem apenas os dados locais deste navegador e não representam métricas bancárias reais.</p>
       </section>
 
+      <section class="page" id="page-emails">
+        <div class="page-heading"><div><div class="eyebrow">Comunicação</div><h1>Envio de e-mails</h1><p class="subheading">Prepare mensagens e confira a prévia antes de qualquer envio.</p></div></div>
+        <div class="dashboard-grid">
+          <div class="panel"><div class="panel-heading"><div><h3>Compor mensagem</h3><p>Selecione o cliente e monte o e-mail.</p></div></div>
+            <div class="form-grid">
+              <div class="field"><label for="emailClientSelect">Cliente</label><select id="emailClientSelect"><option value="">Selecione um cliente</option></select></div>
+              <div class="field"><label for="emailRecipient">Destinatário</label><select id="emailRecipient"><option value="">Selecione um e-mail</option></select></div>
+              <div class="field full"><label for="emailSubject">Assunto</label><input id="emailSubject" placeholder="Assunto do e-mail"></div>
+              <div class="field full"><label>Mensagem</label>
+                <div class="editor-toolbar" role="toolbar" aria-label="Formatação do e-mail">
+                  <button class="editor-tool" type="button" data-editor-cmd="bold"><b>B</b></button><button class="editor-tool" type="button" data-editor-cmd="italic"><i>I</i></button><button class="editor-tool" type="button" data-editor-cmd="underline"><u>U</u></button><button class="editor-tool" type="button" data-editor-cmd="strikeThrough"><s>S</s></button>
+                  <input class="editor-color" type="color" id="emailTextColor" value="#304238" title="Cor do texto"><input class="editor-color" type="color" id="emailHighlightColor" value="#fff2b3" title="Destaque">
+                  <button class="editor-tool" type="button" data-editor-cmd="insertUnorderedList">• Lista</button><button class="editor-tool" type="button" data-editor-cmd="insertOrderedList">1. Lista</button><button class="editor-tool" type="button" data-editor-cmd="justifyLeft">⇤</button><button class="editor-tool" type="button" data-editor-cmd="justifyCenter">≡</button><button class="editor-tool" type="button" data-editor-cmd="justifyRight">⇥</button><button class="editor-tool" type="button" data-editor-cmd="undo">↶</button><button class="editor-tool" type="button" data-editor-cmd="redo">↷</button><button class="editor-tool" type="button" data-editor-cmd="removeFormat">Tx</button>
+                </div>
+                <div class="rich-editor" id="emailEditor" contenteditable="true" role="textbox" aria-multiline="true"><p>Olá, [nome do cliente]!</p><p>Escreva sua mensagem aqui.</p></div>
+                <span class="field-hint">A assinatura configurada será exibida na prévia do e-mail.</span>
+              </div>
+            </div>
+            <div class="form-footer"><button class="btn btn-secondary" type="button" data-action="load-email-template">Carregar modelo</button><button class="btn btn-secondary" type="button" data-action="preview-email">Ver prévia</button><button class="btn btn-primary" type="button" disabled title="Requer backend seguro">Enviar automático</button></div>
+            <div class="email-state" style="margin-top:12px">Envio real desativado: a hospedagem é estática. Um backend autenticado com provedor de e-mail é necessário para liberar o envio. Não coloque senhas SMTP ou chaves de API no navegador.</div>
+          </div>
+          <div class="panel"><div class="panel-heading"><div><h3>Checklist antes do envio</h3><p>Boas práticas de comunicação</p></div></div>
+            <div class="sector-list"><div class="notice">1. Confira o destinatário e o endereço de e-mail.</div><div class="notice">2. Revise o assunto, o texto e os links.</div><div class="notice">3. Abra a prévia antes de enviar.</div><div class="notice">4. O envio será liberado após integrar o serviço no servidor.</div></div>
+            <div class="security-callout" style="margin-top:16px"><strong>Importante</strong>O remetente precisa ser verificado no provedor. A assinatura visual não substitui uma assinatura digital certificada.</div>
+          </div>
+        </div>
+      </section>
+
       <section class="page" id="page-settings">
         <div class="page-heading"><div><div class="eyebrow">Preferências e dados</div><h1>Configurações</h1><p class="subheading">Gerencie os dados demonstrativos armazenados neste navegador.</p></div></div>
         <div class="settings-grid">
@@ -336,6 +397,18 @@
           <article class="settings-card"><h3>Armazenamento local</h3><p>Os registros são salvos no localStorage deste navegador. Eles não são sincronizados entre dispositivos ou usuários.</p><div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>Use somente informações fictícias. Não armazene senhas, números de cartão, documentos ou dados bancários reais.</div></article>
           <article class="settings-card"><h3>Dados da plataforma</h3><p id="storageSummary">0 clientes e 0 atendimentos armazenados neste navegador.</p><button class="btn btn-secondary" type="button" data-action="export-csv">Exportar histórico CSV</button></article>
           <article class="settings-card"><h3>Limpar dados demonstrativos</h3><p>Esta ação remove os registros locais de clientes e atendimentos deste navegador. A operação não pode ser desfeita.</p><button class="btn btn-danger" type="button" data-action="clear-data">Limpar todos os dados</button></article>
+          <article class="settings-card" style="grid-column:1/-1"><h3>Configurações de e-mail</h3><p>Defina a identidade do remetente e o modelo padrão. Os ajustes ficam neste navegador até a integração com backend.</p>
+            <div class="email-config-grid">
+              <div class="field"><label for="mailFromName">Nome do remetente</label><input id="mailFromName" placeholder="Nome da agência"></div>
+              <div class="field"><label for="mailFromAddress">E-mail do remetente</label><input id="mailFromAddress" type="email" placeholder="atendimento@seudominio.com.br"></div>
+              <div class="field" style="grid-column:1/-1"><label for="mailDefaultSubject">Assunto padrão</label><input id="mailDefaultSubject" placeholder="Assunto padrão"></div>
+              <div class="field" style="grid-column:1/-1"><label for="mailDefaultBody">Mensagem padrão</label><textarea id="mailDefaultBody" placeholder="Modelo padrão de mensagem"></textarea></div>
+              <div class="field" style="grid-column:1/-1"><label for="mailSignatureText">Assinatura visual — texto provisório</label><textarea id="mailSignatureText" placeholder="Atenciosamente,\nEquipe de atendimento"></textarea><span class="field-hint">A área da assinatura foi preparada para receber uma arte futuramente.</span></div>
+              <div class="field" style="grid-column:1/-1"><label for="mailSignatureFile">Imagem da assinatura (opcional)</label><input id="mailSignatureFile" type="file" accept="image/png,image/jpeg,image/webp"><div id="mailSignaturePreview" class="repeat-note">Nenhuma imagem selecionada.</div></div>
+            </div>
+            <div class="form-footer"><button class="btn btn-primary" type="button" data-action="save-mail-settings">Salvar configurações</button></div>
+            <div class="email-state">O endereço do remetente precisa ser validado no provedor. Nenhuma credencial de e-mail é armazenada nesta página.</div>
+          </article>
         </div>
       </section>
 
@@ -346,16 +419,21 @@
 
 <dialog id="clientDialog">
   <form id="clientForm">
-    <div class="dialog-head"><div><h2 id="clientDialogTitle">Cadastrar cliente</h2><p>Preencha os dados fictícios para adicionar à base local.</p></div><button class="close-btn" type="button" data-action="close-dialog" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
-    <div class="dialog-body">
+    <div class="dialog-head"><div><h2 id="clientDialogTitle">Cadastrar cliente</h2><p>Cadastro completo com contatos, instituições e anexos.</p></div><button class="close-btn" type="button" data-action="close-dialog" aria-label="Fechar">×</button></div>
+    <div class="dialog-body" style="max-height:65vh;overflow:auto">
       <input type="hidden" id="clientId">
+      <div class="field full" style="margin-bottom:14px"><label>Foto de perfil *</label><div class="profile-upload"><div id="profilePreview" class="profile-preview">FOTO</div><div><input id="clientPhoto" type="file" accept="image/png,image/jpeg,image/webp" style="font-size:10px" required><span class="field-hint">PNG, JPG ou WEBP, até 5 MB. Armazenamento local neste navegador.</span></div></div></div>
       <div class="form-grid">
-        <div class="field full"><label for="clientName">Nome completo *</label><input id="clientName" type="text" placeholder="Nome do cliente" autocomplete="name" maxlength="100" required></div>
-        <div class="field full"><label for="clientEmail">E-mail *</label><input id="clientEmail" type="email" placeholder="email@exemplo.com" autocomplete="email" maxlength="150" required></div>
-        <div class="field full"><label for="clientPhone">Telefone *</label><input id="clientPhone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" maxlength="30" required></div>
+        <div class="field full"><label for="clientName">Nome completo *</label><input id="clientName" type="text" placeholder="Nome do cliente" maxlength="100" required></div>
+        <div class="field full"><label for="clientCpf">CPF</label><input id="clientCpf" class="locked-field" type="text" placeholder="Disponível após integração segura" disabled><span class="field-hint">Bloqueado nesta versão estática. CPF exige backend autenticado, criptografia e controle de acesso.</span></div>
+        <div class="field full"><div class="repeat-section"><div class="repeat-head"><strong>E-mails do cliente</strong><button class="btn btn-secondary btn-sm" type="button" data-action="add-email">+ Adicionar e-mail</button></div><div id="emailsContainer" style="display:grid;gap:8px"></div><span class="repeat-note">O primeiro endereço será considerado o contato principal.</span></div></div>
+        <div class="field full"><label for="clientPhone">Telefone principal *</label><input id="clientPhone" type="tel" placeholder="(00) 00000-0000" maxlength="30" required></div>
+        <div class="field full"><div class="repeat-section"><div class="repeat-head"><strong>Instituições e agências bancárias</strong><button class="btn btn-secondary btn-sm" type="button" data-action="add-bank">+ Adicionar banco</button></div><div id="banksContainer" style="display:grid;gap:8px"></div><span class="repeat-note">Registre instituição, agência, tipo de conta e somente os 4 últimos dígitos da conta.</span></div></div>
+        <div class="field full"><div class="repeat-section"><div class="repeat-head"><strong>Referências de cartões</strong><button class="btn btn-secondary btn-sm" type="button" data-action="add-card">+ Adicionar cartão</button></div><div id="cardsContainer" style="display:grid;gap:8px"></div><div class="security-callout"><strong>Proteção de cartões</strong>Não informe número completo, validade, CVV/CVC, código de segurança, senha ou PIN. Guarde somente bandeira, identificação e últimos quatro dígitos. O CVV/CVC não pode ser retido após autorização, mesmo criptografado.</div></div></div>
+        <div class="field full"><div class="repeat-section"><div class="repeat-head"><strong>Documentos e anexos</strong></div><input id="clientFiles" type="file" multiple accept=".pdf,image/png,image/jpeg,image/webp" style="font-size:10px"><span class="repeat-note">Até 5 MB por arquivo. Não anexe imagens de cartões nem documentos contendo códigos de segurança ou senhas.</span><div id="clientDocList" class="file-list"></div></div></div>
       </div>
     </div>
-    <div class="dialog-actions"><button class="btn btn-secondary" type="button" data-action="close-dialog">Cancelar</button><button class="btn btn-primary" type="submit">Salvar cliente</button></div>
+    <div class="dialog-actions"><button class="btn btn-secondary" type="button" data-action="close-dialog">Cancelar</button><button class="btn btn-primary" type="submit">Salvar cadastro</button></div>
   </form>
 </dialog>
 
@@ -364,8 +442,11 @@
   <div class="dialog-body" id="detailBody"></div>
   <div class="dialog-actions"><button class="btn btn-secondary" type="button" data-action="close-dialog">Fechar</button></div>
 </dialog>
-<div class="toast-region" id="toastRegion" aria-live="polite"></div>
+<dialog id="emailPreviewDialog"><div class="dialog-head"><div><h2>Prévia do e-mail</h2><p>Confira a mensagem antes de qualquer envio.</p></div><button class="close-btn" type="button" data-action="close-dialog">×</button></div><div class="dialog-body"><div class="email-preview"><div class="email-paper"><div class="email-paper-head">AGÊNCIA • COMUNICAÇÃO</div><div class="email-paper-meta"><div><strong>De:</strong> <span id="previewFrom"></span></div><div><strong>Para:</strong> <span id="previewTo"></span></div><div><strong>Assunto:</strong> <span id="previewSubject"></span></div></div><div class="email-paper-body" id="previewBody"></div></div></div></div><div class="dialog-actions"><button class="btn btn-secondary" type="button" data-action="close-dialog">Fechar prévia</button></div></dialog><div class="toast-region" id="toastRegion" aria-live="polite"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 <script>
 (() => {
   "use strict";
