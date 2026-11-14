@@ -1,0 +1,11 @@
+name = "agencia-bancaria-auth"
+main = "worker.js"
+compatibility_date = "2026-11-14"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "agencia-bancaria-auth"
+database_id = "PREENCHER_COM_ID_DO_D1"
+
+[vars]
+ALLOWED_ORIGIN = "https://fpzadagol-wq.github.io"
