@@ -73,8 +73,8 @@ export default {
         const body = await request.json();
         const username = String(body.username || "").trim().toLowerCase();
         const password = String(body.password || "");
-        if (!/^[a-z0-9._-]{3,40}$/.test(username) || password.length < 12)
-          return json({error:"Informe um login válido e uma senha com pelo menos 12 caracteres."},400,headers);
+        if (!/^[a-z0-9._-]{3,40}$/.test(username) || password.length < 8)
+          return json({error:"Informe um login válido e uma senha com pelo menos 8 caracteres."},400,headers);
         const result = await env.DB.prepare("INSERT INTO users(username,password_hash,role,active,created_at,updated_at) VALUES(?,?, 'admin',1,?,?)")
           .bind(username, await hashPassword(password), new Date().toISOString(), new Date().toISOString()).run();
         await audit(env.DB, username, "bootstrap_admin", username);
@@ -116,8 +116,8 @@ export default {
         const username = String(body.username || "").trim().toLowerCase();
         const password = String(body.password || "");
         const role = body.role === "admin" ? "admin" : "user";
-        if (!/^[a-z0-9._-]{3,40}$/.test(username) || password.length < 12)
-          return json({error:"Login inválido ou senha menor que 12 caracteres."},400,headers);
+        if (!/^[a-z0-9._-]{3,40}$/.test(username) || password.length < 8)
+          return json({error:"Login inválido ou senha menor que 8 caracteres."},400,headers);
         const now = new Date().toISOString();
         try {
           const result = await env.DB.prepare("INSERT INTO users(username,password_hash,role,active,created_at,updated_at) VALUES(?,?,?,?,?,?)")
@@ -136,7 +136,7 @@ export default {
           if (Number(n.total) <= 1) return json({error:"Mantenha pelo menos um administrador ativo."},409,headers);
         }
         if (body.password !== undefined) {
-          if (String(body.password).length < 12) return json({error:"A nova senha deve ter pelo menos 12 caracteres."},400,headers);
+          if (String(body.password).length < 8) return json({error:"A nova senha deve ter pelo menos 8 caracteres."},400,headers);
           await env.DB.prepare("UPDATE users SET password_hash=?,updated_at=? WHERE id=?").bind(await hashPassword(body.password),new Date().toISOString(),id).run();
         }
         if (body.active !== undefined || body.role !== undefined) {
