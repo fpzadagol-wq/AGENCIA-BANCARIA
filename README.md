@@ -23,7 +23,7 @@ A autenticação usa Cloudflare Workers e D1. O mesmo login dá acesso aos dois 
    - wrangler secret put BOOTSTRAP_KEY — use outra chave aleatória forte; será solicitada uma única vez ao criar o primeiro administrador.
 7. Publique o Worker: wrangler deploy.
 8. Copie a URL workers.dev gerada e configure API_BASE_URL em auth-config.js.
-9. Publique as alterações do repositório pelo GitHub Pages e abra login.html. Use a BOOTSTRAP_KEY para criar o primeiro administrador e defina uma senha com pelo menos 12 caracteres.
+9. Publique as alterações do repositório pelo GitHub Pages e abra login.html. Use a BOOTSTRAP_KEY para criar o primeiro administrador e defina uma senha com pelo menos 8 caracteres.
 
 O Worker aplica bloqueio temporário após cinco tentativas de login inválidas. O banco também mantém trilha de auditoria das ações administrativas.
 
