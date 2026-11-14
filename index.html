@@ -26,7 +26,7 @@ document.documentElement.style.visibility="hidden";
 <div class="welcome-inner"><div class="eyebrow">Ambiente integrado</div><h1>Todos os seus painéis em um só lugar.</h1><p>Escolha qual ambiente deseja acessar. O painel original da Agência Bancária foi preservado, e o FluxoPay foi adicionado como um segundo módulo independente.</p>
 <div class="cards">
 <article class="card" id="agencyCard"><div class="icon green">▦</div><h2>Agência Bancária</h2><p>Acesse o painel original de gestão de clientes, atendimentos e ferramentas da agência. Nenhuma funcionalidade original foi removida.</p><div class="open">ABRIR PAINEL　→</div></article>
-<article class="card" id="gatewayCard"><div class="icon purple">⇄</div><h2>Gateway de Pagamentos</h2><p>Acesse o FluxoPay para gerenciar recebedores, visualizar transações demonstrativas e preparar integrações de pagamento.</p><div class="open">ABRIR PAINEL　→</div></article>
+<article class="card" id="gatewayCard"><div class="icon purple">⇄</div><h2>Gateway de Pagamentos</h2><p>Acesse o FluxoPay para gerenciar recebedores, consultar registros e administrar integrações de pagamento.</p><div class="open">ABRIR PAINEL　→</div></article>
 </div><div class="foot">Portal unificado · Módulos independentes</div>
 </div></section>
 <iframe id="agencyFrame" title="Painel Agência Bancária" data-src="agencia.html"></iframe>
@@ -36,7 +36,7 @@ document.documentElement.style.visibility="hidden";
 (function(){
 const home=document.getElementById('home'),frames={agency:document.getElementById('agencyFrame'),gateway:document.getElementById('gatewayFrame')},buttons={home:document.getElementById('homeBtn'),agency:document.getElementById('agencyBtn'),gateway:document.getElementById('gatewayBtn')};
 function show(which){home.style.display=which==='home'?'flex':'none';Object.keys(frames).forEach(k=>frames[k].classList.toggle('active',k===which));Object.keys(buttons).forEach(k=>buttons[k].classList.toggle('active',k===which));}
-buttons.home.addEventListener('click',()=>show('home'));buttons.agency.addEventListener('click',()=>show('agency'));buttons.gateway.addEventListener('click',()=>show('gateway'));document.getElementById('agencyCard').addEventListener('click',()=>show('agency'));document.getElementById('gatewayCard').addEventListener('click',()=>show('gateway'));
+document.getElementById('logoutBtn').addEventListener('click',()=>{sessionStorage.removeItem('portal_token');sessionStorage.removeItem('portal_user');location.href='login.html'});try{const u=JSON.parse(sessionStorage.getItem('portal_user')||'null');if(u)document.getElementById('signedUser').textContent=u.username+(u.role==='admin'?' · Administrador':'')}catch(e){}buttons.home.addEventListener('click',()=>show('home'));buttons.agency.addEventListener('click',()=>show('agency'));buttons.gateway.addEventListener('click',()=>show('gateway'));document.getElementById('agencyCard').addEventListener('click',()=>show('agency'));document.getElementById('gatewayCard').addEventListener('click',()=>show('gateway'));
 })();
 </script>
 </body></html>
