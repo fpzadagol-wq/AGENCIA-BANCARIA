@@ -1,4 +1,5 @@
-// Defina a URL após publicar o Cloudflare Worker.
+// Configuração do serviço de autenticação hospedado na Cloudflare.
 window.AUTH_CONFIG = {
-  AUTH_ENABLED: false,\n  API_BASE_URL: "https://SEU-WORKER.SUA-CONTA.workers.dev"
+  AUTH_ENABLED: false,
+  API_BASE_URL: "https://agencia-bancaria-auth.agencia-bancaria-fpzada.workers.dev"
 };
