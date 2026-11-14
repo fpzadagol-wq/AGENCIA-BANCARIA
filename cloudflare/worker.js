@@ -122,7 +122,7 @@ export default {
         const id = Number(match[1]), body = await request.json();
         const target = await env.DB.prepare("SELECT id,username,role,active FROM users WHERE id=?").bind(id).first();
         if (!target) return json({error:"Usuário não encontrado."},404,headers);
-        if (body.active === false && target.role === "admin" && target.active) {
+        if ((body.active === false || body.role === "user") && target.role === "admin" && target.active) {
           const n = await env.DB.prepare("SELECT COUNT(*) AS total FROM users WHERE role='admin' AND active=1").first();
           if (Number(n.total) <= 1) return json({error:"Mantenha pelo menos um administrador ativo."},409,headers);
         }
