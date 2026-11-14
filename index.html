@@ -7,7 +7,10 @@
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:Inter,Arial,sans-serif;background:#f3f5fa;color:#202943}.top{height:66px;background:#11152d;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 22px;gap:16px;box-shadow:0 4px 18px #11152d20;position:relative;z-index:2}.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.3px}.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(145deg,#9a8cff,#6650dc);display:grid;place-items:center;font-size:17px}.brand small{display:block;color:#a8b0c8;font-size:9px;font-weight:500;letter-spacing:1.2px;margin-top:3px}.tabs{display:flex;gap:7px}.tabs button{border:1px solid #ffffff25;background:transparent;color:#c4cbe0;padding:10px 14px;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer}.tabs button.active{background:#7662e8;border-color:#7662e8;color:white}.status{font-size:10px;color:#aeb8d1}.workspace{height:calc(100% - 66px);position:relative}.workspace iframe{display:none;border:0;width:100%;height:100%;background:#f4f6fa}.workspace iframe.active{display:block}.welcome{height:100%;display:flex;align-items:center;justify-content:center;padding:28px}.welcome-inner{max-width:850px;width:100%}.eyebrow{font-size:10px;font-weight:800;letter-spacing:1.8px;color:#7560e4;text-transform:uppercase}.welcome h1{font-size:clamp(27px,5vw,42px);letter-spacing:-1.5px;margin:10px 0;color:#202943}.welcome p{font-size:14px;color:#77839a;line-height:1.7;max-width:620px}.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:30px}.card{background:white;border:1px solid #e6eaf2;border-radius:17px;padding:24px;box-shadow:0 10px 30px #2029430b;cursor:pointer;transition:.18s}.card:hover{transform:translateY(-3px);box-shadow:0 16px 34px #20294315;border-color:#c9c1ff}.icon{width:45px;height:45px;border-radius:13px;display:grid;place-items:center;font-size:21px;margin-bottom:17px}.green{background:#e7f3ef;color:#24765e}.purple{background:#f0edff;color:#7059e8}.card h2{font-size:17px;margin:0 0 8px}.card p{font-size:11px;margin:0;color:#8390a5;line-height:1.65}.open{margin-top:18px;font-size:11px;font-weight:800;color:#7059e8}.foot{font-size:10px;color:#9aa4b5;margin-top:24px}@media(max-width:620px){.top{padding:0 12px;height:auto;min-height:66px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}.status{display:none}.tabs button{padding:9px 10px;font-size:10px}.workspace{height:calc(100% - 66px)}.cards{grid-template-columns:1fr}.welcome{align-items:flex-start;overflow:auto;padding:35px 17px}.card{padding:19px}}
 </style>
-</head>
+<script src="auth-config.js"></script><script>
+document.documentElement.style.visibility="hidden";
+(async()=>{try{const t=sessionStorage.getItem("portal_token");if(!t)throw Error();const api=(window.AUTH_CONFIG.API_BASE_URL||"").replace(/\\/$/,"");if(!api||api.includes("SEU-WORKER"))throw Error();const res=await fetch(api+"/api/me",{headers:{Authorization:"Bearer "+t}});if(!res.ok)throw Error();await res.json();document.addEventListener("DOMContentLoaded",()=>{document.documentElement.style.visibility="visible";document.querySelectorAll("iframe[data-src]").forEach(f=>f.src=f.dataset.src)}); }catch{location.replace("login.html")}})();
+</script></head>
 <body>
 <header class="top">
 <div class="brand"><div class="logo">P</div><div>PORTAL DE GESTÃO<small>SELECIONE UM PAINEL</small></div></div>
@@ -16,7 +19,7 @@
 <button id="agencyBtn" type="button">Agência Bancária</button>
 <button id="gatewayBtn" type="button">Gateway de Pagamentos</button>
 </nav>
-<div class="status">2 módulos disponíveis</div>
+<div class="status"><span id="signedUser">Sessão autenticada</span>　<button id="logoutBtn" style="border:1px solid #ffffff35;background:transparent;color:white;border-radius:7px;padding:7px 10px;cursor:pointer">Sair</button></div>
 </header>
 <main class="workspace">
 <section class="welcome" id="home">
@@ -26,8 +29,8 @@
 <article class="card" id="gatewayCard"><div class="icon purple">⇄</div><h2>Gateway de Pagamentos</h2><p>Acesse o FluxoPay para gerenciar recebedores, visualizar transações demonstrativas e preparar integrações de pagamento.</p><div class="open">ABRIR PAINEL　→</div></article>
 </div><div class="foot">Portal unificado · Módulos independentes</div>
 </div></section>
-<iframe id="agencyFrame" title="Painel Agência Bancária" src="agencia.html"></iframe>
-<iframe id="gatewayFrame" title="Painel FluxoPay" src="gateway.html"></iframe>
+<iframe id="agencyFrame" title="Painel Agência Bancária" data-src="agencia.html"></iframe>
+<iframe id="gatewayFrame" title="Painel FluxoPay" data-src="gateway.html"></iframe>
 </main>
 <script>
 (function(){
