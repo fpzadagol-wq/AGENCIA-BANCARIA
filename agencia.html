@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#123c32">
-  <meta name="description" content="Plataforma demonstrativa de gestão de clientes e atendimentos de uma agência bancária.">
+  <meta name="description" content="Gestão de clientes, atendimentos e rotinas administrativas.">
   <title>Agência Bancária | Painel de Gestão</title>
   <style>
     :root {
@@ -259,7 +259,7 @@
     </nav>
     <div class="sidebar-spacer"></div>
     <div class="sidebar-note"><strong>Ambiente demonstrativo</strong><p>Utilize apenas dados fictícios. Nenhuma operação financeira real é realizada nesta plataforma.</p></div>
-    <div class="profile-mini"><div class="avatar">AG</div><div><div class="profile-name">Equipe da agência</div><div class="profile-role">Acesso demonstrativo</div></div></div>
+    <div class="profile-mini"><div class="avatar">AG</div><div><div class="profile-name">Equipe da agência</div><div class="profile-role">Equipe interna</div></div></div>
   </aside>
   <div class="mobile-overlay" id="mobileOverlay"></div>
 
@@ -396,12 +396,12 @@
       </section>
 
       <section class="page" id="page-settings">
-        <div class="page-heading"><div><div class="eyebrow">Preferências e dados</div><h1>Configurações</h1><p class="subheading">Gerencie os dados demonstrativos armazenados neste navegador.</p></div></div>
+        <div class="page-heading"><div><div class="eyebrow">Preferências e dados</div><h1>Configurações</h1><p class="subheading">Gerencie os registros armazenados neste dispositivo.</p></div></div>
         <div class="settings-grid">\n          <article class="settings-card" style="grid-column:1/-1"><h3>Controle de acessos</h3><p>Gerencie os logins e as permissões compartilhadas entre a Agência Bancária e o FluxoPay.</p><a class="btn btn-primary" href="usuarios.html">Gerenciar usuários</a></article>
           <article class="settings-card"><h3>Backup dos registros</h3><p>Baixe uma cópia dos clientes e atendimentos cadastrados em formato JSON para guardar ou transferir os dados.</p><button class="btn btn-primary" type="button" data-action="export-json">Exportar backup</button></article>
-          <article class="settings-card"><h3>Armazenamento local</h3><p>Os registros são salvos no localStorage deste navegador. Eles não são sincronizados entre dispositivos ou usuários.</p><div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>Use somente informações fictícias. Não armazene senhas, números de cartão, documentos ou dados bancários reais.</div></article>
+          <article class="settings-card"><h3>Armazenamento local</h3><p>Os registros são salvos no localStorage deste navegador. Eles não são sincronizados entre dispositivos ou usuários.</p><div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>Os registros permanecem neste dispositivo até a ativação da sincronização central. Siga as políticas internas de privacidade e controle de acesso ao inserir informações pessoais.</div></article>
           <article class="settings-card"><h3>Dados da plataforma</h3><p id="storageSummary">0 clientes e 0 atendimentos armazenados neste navegador.</p><button class="btn btn-secondary" type="button" data-action="export-csv">Exportar histórico CSV</button></article>
-          <article class="settings-card"><h3>Limpar dados demonstrativos</h3><p>Esta ação remove os registros locais de clientes e atendimentos deste navegador. A operação não pode ser desfeita.</p><button class="btn btn-danger" type="button" data-action="clear-data">Limpar todos os dados</button></article>
+          <article class="settings-card"><h3>Limpar registros locais</h3><p>Esta ação remove os registros de clientes e atendimentos armazenados neste dispositivo. A operação não pode ser desfeita.</p><button class="btn btn-danger" type="button" data-action="clear-data">Limpar todos os dados</button></article>
           <article class="settings-card" style="grid-column:1/-1"><h3>Configurações de e-mail</h3><p>Defina a identidade do remetente e o modelo padrão. Os ajustes ficam neste navegador até a integração com backend.</p>
             <div class="email-config-grid">
               <div class="field"><label for="mailFromName">Nome do remetente</label><input id="mailFromName" placeholder="Nome da agência"></div>
@@ -417,7 +417,7 @@
         </div>
       </section>
 
-      <div class="footer-note">AGÊNCIA • Plataforma demonstrativa de gestão • Não realiza operações financeiras.</div>
+      <div class="footer-note">AGÊNCIA • Gestão de clientes e atendimentos • Área administrativa.</div>
     </main>
   </div>
 </div>
@@ -479,7 +479,7 @@
     telefone: String(c.telefone || ""), createdAt: c.createdAt || null
   }));
   let tickets = loadArray(STORAGE_TICKETS).map(t => ({
-    ...t, id: t.id ?? makeId(), protocolo: String(t.protocolo || "DEMO-" + String(Date.now()).slice(-8)),
+    ...t, id: t.id ?? makeId(), protocolo: String(t.protocolo || "ATD-" + String(Date.now()).slice(-8)),
     cliente: String(t.cliente || ""), setor: String(t.setor || "Atendimento geral"),
     descricao: String(t.descricao || ""), data: String(t.data || ""),
     createdAt: t.createdAt || null, prioridade: t.prioridade || "Normal",
@@ -584,7 +584,7 @@
       ctx.fillStyle="#185543";ctx.fillRect(55,head-40,w-110,43);ctx.fillStyle="#fff";ctx.font="700 15px Arial";labels.forEach((v,i)=>ctx.fillText(v,xs[i],head-12));
       slice.forEach((row,i)=>{const y=head+i*rh;ctx.fillStyle=i%2?"#eaf2ed":"#fff";ctx.fillRect(55,y,w-110,rh);ctx.fillStyle="#dce7e0";ctx.fillRect(55,y+rh-1,w-110,1);ctx.fillStyle="#1c3d30";ctx.font="600 16px Arial";
         row.forEach((v,j)=>{const max=[28,42,22,20,18][j],s=String(v||"—");ctx.fillText(s.length>max?s.slice(0,max-1)+"…":s,xs[j],y+29);});});
-      ctx.fillStyle="#73857a";ctx.font="13px Arial";ctx.fillText("Relatório demonstrativo • Dados financeiros sensíveis não incluídos",75,canvas.height-23);
+      ctx.fillStyle="#73857a";ctx.font="13px Arial";ctx.fillText("Relatório interno • Informações administrativas",75,canvas.height-23);
       canvas.toBlob(blob=>{if(blob)downloadBlob(blob,"lista-clientes"+(rows.length>batch?"-"+(Math.floor(start/batch)+1):"")+".png");},"image/png");
     }
     toast(rows.length>batch?"Imagem exportada em partes para preservar a qualidade.":"Imagem da lista preparada.");
@@ -597,13 +597,13 @@
     ws.columns=[{width:30},{width:42},{width:20},{width:36},{width:20}];
     ws.mergeCells("A1:E1");ws.getCell("A1").value="AGÊNCIA BANCÁRIA  |  RELACIONAMENTO COM CLIENTES";
     ws.getCell("A1").font={name:"Aptos Display",size:16,bold:true,color:{argb:"FFFFFFFF"}};ws.getCell("A1").fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF123C32"}};ws.getCell("A1").alignment={vertical:"middle"};ws.getRow(1).height=34;
-    ws.mergeCells("A2:E2");ws.getCell("A2").value="Relatório demonstrativo • Emitido em "+new Date().toLocaleString("pt-BR")+" • "+clients.length+" registro(s)";ws.getCell("A2").font={name:"Aptos",size:10,italic:true,color:{argb:"FF526A5D"}};ws.getRow(2).height=22;
+    ws.mergeCells("A2:E2");ws.getCell("A2").value="Relatório interno • Emitido em "+new Date().toLocaleString("pt-BR")+" • "+clients.length+" registro(s)";ws.getCell("A2").font={name:"Aptos",size:10,italic:true,color:{argb:"FF526A5D"}};ws.getRow(2).height=22;
     ws.mergeCells("A3:E3");ws.getCell("A3").value="Privacidade: CPF, contas completas, cartões completos, CVV/CVC e anexos não são exportados.";ws.getCell("A3").font={name:"Aptos",size:9,color:{argb:"FF8A6329"}};ws.getCell("A3").fill={type:"pattern",pattern:"solid",fgColor:{argb:"FFFFF6E7"}};ws.getRow(3).height=24;
     ws.addTable({name:"TabelaClientes",ref:"A4",headerRow:true,style:{theme:"TableStyleMedium4",showRowStripes:true},columns:[{name:"Cliente"},{name:"E-mails"},{name:"Telefone"},{name:"Instituições"},{name:"Data de cadastro"}],rows:safeExportRows()});
     ws.getRow(4).height=27;ws.getRow(4).eachCell(c=>{c.font={name:"Aptos",size:10,bold:true,color:{argb:"FFFFFFFF"}};c.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF185543"}};c.alignment={vertical:"middle",wrapText:true};c.border={bottom:{style:"medium",color:{argb:"FF9BC7AE"}}};});
     for(let r=5;r<=4+clients.length;r++){const row=ws.getRow(r);row.height=24;row.eachCell(c=>{c.font={name:"Aptos",size:10,color:{argb:"FF304238"}};c.alignment={vertical:"middle",wrapText:true};c.border={bottom:{style:"hair",color:{argb:"FFE4ECE7"}}};if(r%2===0)c.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FFF2F7F3"}};});}
     const info=wb.addWorksheet("Orientações",{views:[{showGridLines:false}]});info.columns=[{width:26},{width:95}];info.mergeCells("A1:B1");info.getCell("A1").value="ORIENTAÇÕES DO RELATÓRIO";info.getCell("A1").font={bold:true,size:14,color:{argb:"FFFFFFFF"}};info.getCell("A1").fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF123C32"}};info.getRow(1).height=30;
-    info.addRows([["Escopo","Dados básicos de contato e nomes das instituições."],["Privacidade","CPF, números completos de conta e cartão, CVV/CVC, senhas, PINs e anexos não são exportados."],["Armazenamento","Os dados desta versão ficam no navegador que realizou os cadastros."],["Uso","Relatório demonstrativo. Compartilhe dados pessoais conforme as políticas internas e a LGPD."]]);
+    info.addRows([["Escopo","Dados básicos de contato e nomes das instituições."],["Privacidade","CPF, números completos de conta e cartão, CVV/CVC, senhas, PINs e anexos não são exportados."],["Armazenamento","Os dados desta versão ficam no navegador que realizou os cadastros."],["Uso","Relatório interno. Compartilhe informações pessoais conforme as políticas internas e a LGPD."]]);
     info.getColumn(1).font={bold:true,color:{argb:"FF185543"}};info.getColumn(2).alignment={wrapText:true,vertical:"top"};info.eachRow((row,n)=>{if(n>1){row.height=38;row.getCell(2).font={size:10,color:{argb:"FF45594D"}};}});
     const buf=await wb.xlsx.writeBuffer();downloadBlob(new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}),"lista-clientes-agencia.xlsx");toast("Planilha Excel profissional exportada.");
   }
@@ -613,7 +613,7 @@
     const doc=new window.jspdf.jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
     doc.setFillColor(18,60,50);doc.rect(0,0,297,31,"F");doc.setTextColor(225,241,231);doc.setFont("helvetica","bold");doc.setFontSize(9);doc.text("AGÊNCIA BANCÁRIA  /  RELACIONAMENTO",14,10);
     doc.setTextColor(255,255,255);doc.setFontSize(19);doc.text("Lista de clientes",14,21);doc.setTextColor(95,112,102);doc.setFont("helvetica","normal");doc.setFontSize(8);doc.text("Emitido em "+new Date().toLocaleString("pt-BR")+" • "+clients.length+" registro(s)",14,38);
-    doc.autoTable({startY:44,head:[["Cliente","E-mails","Telefone","Instituições","Cadastro"]],body:safeExportRows(),theme:"grid",styles:{font:"helvetica",fontSize:7.5,cellPadding:3,textColor:[48,66,56],lineColor:[222,232,225],lineWidth:.15,overflow:"linebreak"},headStyles:{fillColor:[24,85,67],textColor:[255,255,255],fontStyle:"bold",fontSize:8},alternateRowStyles:{fillColor:[241,247,243]},margin:{left:14,right:14,bottom:18},didDrawPage:()=>{doc.setFontSize(7);doc.setTextColor(120,135,125);doc.text("Relatório demonstrativo • Dados financeiros sensíveis não incluídos",14,204);}});
+    doc.autoTable({startY:44,head:[["Cliente","E-mails","Telefone","Instituições","Cadastro"]],body:safeExportRows(),theme:"grid",styles:{font:"helvetica",fontSize:7.5,cellPadding:3,textColor:[48,66,56],lineColor:[222,232,225],lineWidth:.15,overflow:"linebreak"},headStyles:{fillColor:[24,85,67],textColor:[255,255,255],fontStyle:"bold",fontSize:8},alternateRowStyles:{fillColor:[241,247,243]},margin:{left:14,right:14,bottom:18},didDrawPage:()=>{doc.setFontSize(7);doc.setTextColor(120,135,125);doc.text("Relatório interno • Informações administrativas",14,204);}});
     doc.save("lista-clientes-agencia.pdf");toast("PDF profissional exportado.");
   }
   async function fillEmailSettings(){
@@ -847,7 +847,7 @@
     const banks=(c.banks||[]).map(b=>'<div class="sector-meta"><span>'+escapeHTML(b.name)+'</span><strong>Ag. '+escapeHTML(b.branch||"—")+' • '+escapeHTML(b.type||"Conta")+' • final '+escapeHTML(b.last4||"----")+'</strong></div>').join("");
     const cards=(c.cards||[]).map(k=>'<div class="sector-meta"><span>'+escapeHTML(k.brand)+' • '+escapeHTML(k.label||"Cartão")+'</span><strong>final '+escapeHTML(k.last4||"----")+'</strong></div>').join("");
     const docs=(c.documents||[]).map(d=>'<div class="sector-meta"><span>'+escapeHTML(d.name)+'</span><button class="btn btn-secondary btn-sm" type="button" data-action="download-doc" data-id="'+escapeHTML(d.id)+'">Baixar</button></div>').join("");
-    openDetail("Detalhes do cliente","Registro da base demonstrativa",'<div class="person-cell" style="margin-bottom:18px"><div class="person-avatar" style="width:48px;height:48px">'+escapeHTML(initials(c.nome))+'</div><div><div class="person-name" style="font-size:13px">'+escapeHTML(c.nome)+'</div><div class="person-sub">Cliente cadastrado</div></div></div>'+
+    openDetail("Detalhes do cliente","Registro cadastrado",'<div class="person-cell" style="margin-bottom:18px"><div class="person-avatar" style="width:48px;height:48px">'+escapeHTML(initials(c.nome))+'</div><div><div class="person-name" style="font-size:13px">'+escapeHTML(c.nome)+'</div><div class="person-sub">Cliente cadastrado</div></div></div>'+
       '<div class="sector-list">'+emails+'<div class="sector-meta"><span>Telefone</span><strong>'+escapeHTML(c.telefone)+'</strong></div><div class="sector-meta"><span>Cadastro</span><strong>'+escapeHTML(formatDate("",c.createdAt))+'</strong></div><div class="sector-meta"><span>Atendimentos</span><strong>'+related+'</strong></div>'+
       (banks?'<div style="border-top:1px solid #e8eeeb;padding-top:10px"><strong style="font-size:10px">Instituições bancárias</strong>'+banks+'</div>':'')+
       (cards?'<div style="border-top:1px solid #e8eeeb;padding-top:10px"><strong style="font-size:10px">Referências de cartões — somente final</strong>'+cards+'</div>':'')+
@@ -874,7 +874,7 @@
     toast("Arquivo CSV preparado para download.");
   }
   function exportJSON() {
-    const content = JSON.stringify({exportadoEm:new Date().toISOString(),clientes,atendimentos:tickets,aviso:"Dados demonstrativos locais. Não contém operações financeiras reais."},null,2);
+    const content = JSON.stringify({exportadoEm:new Date().toISOString(),clientes,atendimentos:tickets,aviso:"Registros administrativos deste painel."},null,2);
     downloadFile(content,"backup-agencia-bancaria.json","application/json");
     toast("Backup preparado para download.");
   }
@@ -927,7 +927,7 @@
       case "export-json": exportJSON(); break;
       case "clear-data":
         if (!confirm("Tem certeza de que deseja apagar todos os clientes e atendimentos deste navegador? Esta ação não pode ser desfeita.")) break;
-        clients=[]; tickets=[]; saveData(); render(); toast("Dados demonstrativos removidos."); break;
+        clients=[]; tickets=[]; saveData(); render(); toast("Registros locais removidos."); break;
     }
   });
 
@@ -986,7 +986,7 @@
     if (!client) { toast("Cadastre ou selecione um cliente antes de continuar.","error"); return; }
     if (!sector || !description) { toast("Preencha o setor e a descrição da solicitação.","error"); return; }
     const now = new Date();
-    const protocol = "DEMO-" + now.getTime().toString().slice(-8);
+    const protocol = "ATD-" + now.getTime().toString().slice(-8);
     const ticket = {id:makeId(),protocolo:protocol,cliente:client.nome,setor:sector,descricao:description,data:now.toLocaleString("pt-BR"),createdAt:now.toISOString(),prioridade:$("#ticketPriority").value,canal:$("#ticketChannel").value,status:"Pendente"};
     tickets.push(ticket);
     if (!saveData()) { tickets.pop(); return; }
