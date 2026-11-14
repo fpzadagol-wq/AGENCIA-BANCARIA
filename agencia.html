@@ -236,8 +236,9 @@
     @media(max-width:760px){.heading-actions{width:100%;justify-content:flex-start}.heading-actions .btn{flex:1}.repeat-row{grid-template-columns:1fr 1fr}.repeat-row .remove-row{grid-column:1/-1;width:100%}.email-config-grid{grid-template-columns:1fr}}
     @media(max-width:460px){.profile-upload{align-items:flex-start}.heading-actions .btn{font-size:9px;padding:9px 8px}}
   </style>
+<script>document.documentElement.style.visibility="hidden";</script>
 </head>
-<body>\n<script src="auth-config.js"></script><script src="auth-client.js"></script><script>PortalAuth.requireAuth();</script>
+<body>\n<script src="auth-config.js"></script><script src="auth-client.js"></script><script>PortalAuth.requireAuth().then(user=>{if(user)document.documentElement.style.visibility='visible'});</script>
 <div class="app-shell">
   <aside class="sidebar" id="sidebar">
     <div class="brand">
