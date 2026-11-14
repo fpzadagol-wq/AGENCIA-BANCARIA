@@ -9,7 +9,7 @@
 </style>
 <script src="auth-config.js"></script><script>
 document.documentElement.style.visibility="hidden";
-(async()=>{try{const t=sessionStorage.getItem("portal_token");if(!t)throw Error();const api=(window.AUTH_CONFIG.API_BASE_URL||"").replace(/\\/$/,"");if(!api||api.includes("SEU-WORKER"))throw Error();const res=await fetch(api+"/api/me",{headers:{Authorization:"Bearer "+t}});if(!res.ok)throw Error();await res.json();document.addEventListener("DOMContentLoaded",()=>{document.documentElement.style.visibility="visible";document.querySelectorAll("iframe[data-src]").forEach(f=>f.src=f.dataset.src)}); }catch{location.replace("login.html")}})();
+(async()=>{try{const t=sessionStorage.getItem("portal_token");if(!t)throw Error();const api=(window.AUTH_CONFIG.API_BASE_URL||"").replace(/\\/$/,"");if(!api||api.includes("SEU-WORKER"))throw Error();const res=await fetch(api+"/api/me",{headers:{Authorization:"Bearer "+t}});if(!res.ok)throw Error();await res.json();const reveal=()=>{document.documentElement.style.visibility="visible";document.querySelectorAll("iframe[data-src]").forEach(f=>f.src=f.dataset.src)};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",reveal,{once:true});else reveal(); }catch{location.replace("login.html")}})();
 </script></head>
 <body>
 <header class="top">
