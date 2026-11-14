@@ -84,9 +84,18 @@ export default {
         const body = await request.json();
         const username = String(body.username || "").trim().toLowerCase();
         const password = String(body.password || "");
+        const lock = await env.DB.prepare("SELECT attempts, window_started, locked_until FROM login_attempts WHERE username=?").bind(username).first();
+        if (lock && Number(lock.locked_until) > Date.now())
+          return json({error:"Muitas tentativas. Aguarde alguns minutos e tente novamente."},429,headers);
         const user = await env.DB.prepare("SELECT * FROM users WHERE username=?").bind(username).first();
-        if (!user || !user.active || !(await checkPassword(password,user.password_hash)))
+        if (!user || !user.active || !(await checkPassword(password,user.password_hash))) {
+          const now = Date.now(), fresh = !lock || now - Number(lock.window_started) > 900000;
+          const attempts = fresh ? 1 : Number(lock.attempts) + 1;
+          const locked = attempts >= 5 ? now + 900000 : 0;
+          await env.DB.prepare("INSERT INTO login_attempts(username,attempts,window_started,locked_until) VALUES(?,?,?,?) ON CONFLICT(username) DO UPDATE SET attempts=excluded.attempts,window_started=excluded.window_started,locked_until=excluded.locked_until").bind(username,attempts,fresh?now:Number(lock.window_started),locked).run();
           return json({error:"Login ou senha inválidos."},401,headers);
+        }
+        await env.DB.prepare("DELETE FROM login_attempts WHERE username=?").bind(username).run();
         const token = await sign({sub:user.id, exp:Date.now()+8*60*60*1000}, env.SESSION_SECRET);
         await audit(env.DB, username, "login", username);
         return json({token, user:{id:user.id,username:user.username,role:user.role}},200,headers);
