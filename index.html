@@ -536,7 +536,7 @@
     (emails.length?emails:[""]).forEach(addEmailRow);
     (client&&client.banks&&client.banks.length?client.banks:[{}]).forEach(addBankRow);
     (client&&client.cards&&client.cards.length?client.cards:[{}]).forEach(addCardRow);
-    $("#clientDocList").innerHTML=(client&&client.documents||[]).map(d=>'<div class="file-chip"><span>'+escapeHTML(d.name)+'</span><span>'+escapeHTML(d.type||"arquivo")+'</span></div>').join("");
+    $("#clientDocList").innerHTML=(client&&client.documents||[]).map(d=>'<div class="file-chip"><span>'+escapeHTML(d.name)+'</span><button class="btn btn-secondary btn-sm" type="button" data-action="download-doc" data-id="'+escapeHTML(d.id)+'">Baixar</button></div>').join("");
   }
   function readRepeaterData(){
     const emails=$$("#emailsContainer [data-email-value]").map(x=>x.value.trim().toLowerCase()).filter(Boolean);
@@ -548,6 +548,10 @@
     for(const img of $$("#clientsTable img[data-profile-id]")){
       try{const asset=await getAsset(img.dataset.profileId);if(asset&&img.isConnected){const old=urlCache.get(img);if(old)URL.revokeObjectURL(old);const url=URL.createObjectURL(asset.blob);urlCache.set(img,url);img.src=url;}}catch(_){}
     }
+  }
+  async function downloadClientAsset(id){
+    try{const asset=await getAsset(id);if(!asset){toast("Arquivo não encontrado neste navegador.","error");return;}downloadBlob(asset.blob,asset.name||"anexo");}
+    catch(_){toast("Não foi possível abrir o anexo local.","error");}
   }
   function safeExportRows(){
     return clients.map(c=>[c.nome||"",clientEmails(c).join(" | "),c.telefone||"",(c.banks||[]).map(b=>b.name).filter(Boolean).join(" | "),formatDate("",c.createdAt)]);
@@ -607,9 +611,10 @@
     doc.autoTable({startY:44,head:[["Cliente","E-mails","Telefone","Instituições","Cadastro"]],body:safeExportRows(),theme:"grid",styles:{font:"helvetica",fontSize:7.5,cellPadding:3,textColor:[48,66,56],lineColor:[222,232,225],lineWidth:.15,overflow:"linebreak"},headStyles:{fillColor:[24,85,67],textColor:[255,255,255],fontStyle:"bold",fontSize:8},alternateRowStyles:{fillColor:[241,247,243]},margin:{left:14,right:14,bottom:18},didDrawPage:()=>{doc.setFontSize(7);doc.setTextColor(120,135,125);doc.text("Relatório demonstrativo • Dados financeiros sensíveis não incluídos",14,204);}});
     doc.save("lista-clientes-agencia.pdf");toast("PDF profissional exportado.");
   }
-  function fillEmailSettings(){
+  async function fillEmailSettings(){
     $("#mailFromName").value=emailConfig.fromName||"";$("#mailFromAddress").value=emailConfig.fromAddress||"";$("#mailDefaultSubject").value=emailConfig.subject||"";
     $("#mailDefaultBody").value=emailConfig.body||"";$("#mailSignatureText").value=emailConfig.signature||"";
+    try{const asset=await getAsset("email-signature");if(asset){const url=URL.createObjectURL(asset.blob);$("#mailSignaturePreview").innerHTML='<img alt="Assinatura salva" src="'+url+'" style="max-width:230px;max-height:90px;object-fit:contain">';}}catch(_){}
   }
   function saveMailSettings(){
     emailConfig={fromName:$("#mailFromName").value.trim(),fromAddress:$("#mailFromAddress").value.trim(),subject:$("#mailDefaultSubject").value.trim(),body:$("#mailDefaultBody").value,signature:$("#mailSignatureText").value};
@@ -836,7 +841,7 @@
     const emails=clientEmails(c).map(e=>'<div class="sector-meta"><span>E-mail</span><strong>'+escapeHTML(e)+'</strong></div>').join("");
     const banks=(c.banks||[]).map(b=>'<div class="sector-meta"><span>'+escapeHTML(b.name)+'</span><strong>Ag. '+escapeHTML(b.branch||"—")+' • '+escapeHTML(b.type||"Conta")+' • final '+escapeHTML(b.last4||"----")+'</strong></div>').join("");
     const cards=(c.cards||[]).map(k=>'<div class="sector-meta"><span>'+escapeHTML(k.brand)+' • '+escapeHTML(k.label||"Cartão")+'</span><strong>final '+escapeHTML(k.last4||"----")+'</strong></div>').join("");
-    const docs=(c.documents||[]).map(d=>'<div class="sector-meta"><span>Anexo</span><strong>'+escapeHTML(d.name)+'</strong></div>').join("");
+    const docs=(c.documents||[]).map(d=>'<div class="sector-meta"><span>'+escapeHTML(d.name)+'</span><button class="btn btn-secondary btn-sm" type="button" data-action="download-doc" data-id="'+escapeHTML(d.id)+'">Baixar</button></div>').join("");
     openDetail("Detalhes do cliente","Registro da base demonstrativa",'<div class="person-cell" style="margin-bottom:18px"><div class="person-avatar" style="width:48px;height:48px">'+escapeHTML(initials(c.nome))+'</div><div><div class="person-name" style="font-size:13px">'+escapeHTML(c.nome)+'</div><div class="person-sub">Cliente cadastrado</div></div></div>'+
       '<div class="sector-list">'+emails+'<div class="sector-meta"><span>Telefone</span><strong>'+escapeHTML(c.telefone)+'</strong></div><div class="sector-meta"><span>Cadastro</span><strong>'+escapeHTML(formatDate("",c.createdAt))+'</strong></div><div class="sector-meta"><span>Atendimentos</span><strong>'+related+'</strong></div>'+
       (banks?'<div style="border-top:1px solid #e8eeeb;padding-top:10px"><strong style="font-size:10px">Instituições bancárias</strong>'+banks+'</div>':'')+
@@ -886,6 +891,7 @@
       case "add-bank": addBankRow({}); break;
       case "add-card": addCardRow({}); break;
       case "remove-row": action.closest(".repeat-row")?.remove(); break;
+      case "download-doc": downloadClientAsset(id); break;
       case "export-clients-image": exportClientsImage(); break;
       case "export-clients-pdf": exportClientsPDF(); break;
       case "export-clients-xlsx": exportClientsExcel(); break;
