@@ -1,0 +1,11 @@
+name = "portal-acesso-api"
+main = "cloudflare/worker.js"
+compatibility_date = "2026-11-14"
+
+[vars]
+ALLOWED_ORIGIN = "https://fpzadagol-wq.github.io"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "portal-acessos"
+database_id = "PREENCHER_COM_O_ID_DO_D1"
