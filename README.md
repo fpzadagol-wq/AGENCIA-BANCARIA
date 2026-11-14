@@ -1,34 +1,19 @@
-# FluxoPay — painel demonstrativo
+# Portal de Painéis
 
-Este repositório contém a interface estática do painel FluxoPay, publicada pelo GitHub Pages.
+O projeto reúne dois módulos independentes em uma única página inicial, publicada pelo GitHub Pages.
 
-## O que existe nesta versão
+## Módulos
 
-- Painel com indicadores e atividade local.
-- Cadastro demonstrativo de recebedores (pessoa física ou jurídica).
-- Seleção manual do recebedor ativo na interface.
-- Histórico de lançamentos de teste.
-- Prévia visual de checkout.
-- Área de requisitos para integração do provedor.
+- **Agência Bancária** — painel original preservado em `agencia.html`.
+- **Gateway de Pagamentos (FluxoPay)** — segundo painel em `gateway.html`.
+- **Portal inicial** — `index.html`, com navegação entre os dois módulos.
 
-## Limitações importantes
+## Observação sobre pagamentos
 
-Esta versão **não processa pagamentos reais**. Os dados ficam no `localStorage` do navegador e não são sincronizados entre dispositivos. O cadastro de um recebedor não valida titularidade, não cria subconta e não autoriza liquidação.
+O FluxoPay atualmente é uma interface demonstrativa. Os cadastros e lançamentos ficam no armazenamento local do navegador; não processam pagamentos reais, não criam cobranças PIX/cartão/boleto e não liquidam valores. Para produção, é necessário backend seguro, provedor de pagamentos aprovado, onboarding/autorização dos recebedores e webhooks autenticados.
 
-Não colete nem armazene senhas bancárias, PIN, CVV/CVC ou tokens de acesso no frontend. Não coloque credenciais secretas no repositório GitHub.
-
-## Próximas etapas para pagamentos reais
-
-1. Escolher um provedor que aceite onboarding de recebedores terceiros e confirme se permite liquidação direta para contas de diferentes instituições.
-2. Criar um backend hospedado fora do GitHub Pages.
-3. Guardar credenciais do provedor em variáveis de ambiente no backend.
-4. Implementar autenticação de administradores, banco de dados e trilha de auditoria para mudanças de recebedor.
-5. Criar checkout real com PIX/cartão/boleto conforme o contrato e os recursos liberados pelo provedor.
-6. Receber webhooks autenticados e validar o estado do pagamento no servidor antes de marcar um pedido como pago.
-7. Homologar o fluxo com o provedor antes de aceitar pagamentos de clientes.
+Não coloque tokens, senhas bancárias, PIN ou CVV no frontend ou neste repositório. GitHub Pages hospeda apenas arquivos estáticos e não executa backend.
 
 ## Publicação
 
-O frontend pode ser servido pelo GitHub Pages: https://fpzadagol-wq.github.io/AGENCIA-BANCARIA/
-
-O GitHub Pages hospeda arquivos estáticos; não executa backend, não protege segredos e não recebe webhooks.
+https://fpzadagol-wq.github.io/AGENCIA-BANCARIA/
