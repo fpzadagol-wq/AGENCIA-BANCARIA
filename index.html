@@ -374,6 +374,11 @@
                 <div class="editor-toolbar" role="toolbar" aria-label="Formatação do e-mail">
                   <button class="editor-tool" type="button" data-editor-cmd="bold"><b>B</b></button><button class="editor-tool" type="button" data-editor-cmd="italic"><i>I</i></button><button class="editor-tool" type="button" data-editor-cmd="underline"><u>U</u></button><button class="editor-tool" type="button" data-editor-cmd="strikeThrough"><s>S</s></button>
                   <input class="editor-color" type="color" id="emailTextColor" value="#304238" title="Cor do texto"><input class="editor-color" type="color" id="emailHighlightColor" value="#fff2b3" title="Destaque">
+                  <select class="editor-tool" id="emailFontName" title="Fonte"><option value="">Fonte</option><option>Arial</option><option>Georgia</option><option>Verdana</option><option>Tahoma</option><option>Courier New</option></select>
+                  <select class="editor-tool" id="emailFontSize" title="Tamanho"><option value="">Tamanho</option><option value="2">Pequeno</option><option value="3">Normal</option><option value="4">Médio</option><option value="5">Grande</option><option value="6">Muito grande</option></select>
+                  <select class="editor-tool" id="emailBlockType" title="Estilo do parágrafo"><option value="P">Parágrafo</option><option value="H1">Título 1</option><option value="H2">Título 2</option><option value="H3">Título 3</option><option value="BLOCKQUOTE">Citação</option></select>
+                  <button class="editor-tool" type="button" data-editor-cmd="createLink">↗ Link</button><button class="editor-tool" type="button" data-editor-cmd="unlink">Remover link</button>
+                  <button class="editor-tool" type="button" data-editor-cmd="insertLineBreak">Quebra</button><button class="editor-tool" type="button" data-editor-cmd="insertHorizontalRule">Linha</button>
                   <button class="editor-tool" type="button" data-editor-cmd="insertUnorderedList">• Lista</button><button class="editor-tool" type="button" data-editor-cmd="insertOrderedList">1. Lista</button><button class="editor-tool" type="button" data-editor-cmd="justifyLeft">⇤</button><button class="editor-tool" type="button" data-editor-cmd="justifyCenter">≡</button><button class="editor-tool" type="button" data-editor-cmd="justifyRight">⇥</button><button class="editor-tool" type="button" data-editor-cmd="undo">↶</button><button class="editor-tool" type="button" data-editor-cmd="redo">↷</button><button class="editor-tool" type="button" data-editor-cmd="removeFormat">Tx</button>
                 </div>
                 <div class="rich-editor" id="emailEditor" contenteditable="true" role="textbox" aria-multiline="true"><p>Olá, [nome do cliente]!</p><p>Escreva sua mensagem aqui.</p></div>
@@ -624,7 +629,7 @@
     const select=$("#emailClientSelect");if(!select)return;
     const prev=select.value;select.innerHTML='<option value="">Selecione um cliente</option>'+clients.map(c=>'<option value="'+escapeHTML(c.id)+'">'+escapeHTML(c.nome)+'</option>').join("");
     if(clients.some(c=>String(c.id)===prev))select.value=prev;fillEmailRecipients();
-    if(!$("#emailEditor").dataset.loaded){$("#emailEditor").innerHTML=emailConfig.body||"<p>Olá, [nome do cliente]!</p><p>Escreva sua mensagem aqui.</p>";$("#emailEditor").dataset.loaded="1";}
+    if(!$("#emailEditor").dataset.loaded){$("#emailEditor").innerHTML=sanitizeEmailHtml(emailConfig.body||"<p>Olá, [nome do cliente]!</p><p>Escreva sua mensagem aqui.</p>");$("#emailEditor").dataset.loaded="1";}
     if(!$("#emailSubject").value)$("#emailSubject").value=emailConfig.subject||"";
   }
   function fillEmailRecipients(){
@@ -897,7 +902,7 @@
       case "export-clients-xlsx": exportClientsExcel(); break;
       case "export-clients-txt": exportClientsTXT(); break;
       case "preview-email": emailPreview(); break;
-      case "load-email-template": $("#emailEditor").innerHTML=emailConfig.body||"<p>Olá, [nome do cliente]!</p><p>Escreva sua mensagem aqui.</p>";$("#emailSubject").value=emailConfig.subject||"";toast("Modelo padrão carregado.");break;
+      case "load-email-template": $("#emailEditor").innerHTML=sanitizeEmailHtml(emailConfig.body||"<p>Olá, [nome do cliente]!</p><p>Escreva sua mensagem aqui.</p>");$("#emailSubject").value=emailConfig.subject||"";toast("Modelo padrão carregado.");break;
       case "save-mail-settings": saveMailSettings(); break;
       case "close-dialog": action.closest("dialog")?.close(); break;
       case "view-client": showClient(id); break;
@@ -959,9 +964,19 @@
     if(f.size>MAX_FILE_SIZE||!/^image\/(png|jpeg|webp)$/.test(f.type)){toast("A assinatura deve ser PNG, JPG ou WEBP até 5 MB.","error");return;}
     try{await saveAsset("email-signature",f,"signature");const url=URL.createObjectURL(f);$("#mailSignaturePreview").innerHTML='<img alt="Assinatura" src="'+url+'" style="max-width:230px;max-height:90px;object-fit:contain">';toast("Imagem da assinatura salva localmente.");}catch(_){toast("Não foi possível salvar a assinatura.","error");}
   });
-  document.addEventListener("click",event=>{const tool=event.target.closest("[data-editor-cmd]");if(tool)applyEditorCommand(tool.dataset.editorCmd);});
+  document.addEventListener("click",event=>{
+    const tool=event.target.closest("[data-editor-cmd]");if(!tool)return;
+    if(tool.dataset.editorCmd==="createLink"){
+      const url=prompt("Informe o endereço do link (https://...)");
+      if(url&&/^https?:\/\//i.test(url))applyEditorCommand("createLink",url);
+      else if(url)toast("Use um endereço HTTP ou HTTPS válido.","error");
+    }else applyEditorCommand(tool.dataset.editorCmd);
+  });
   $("#emailTextColor").addEventListener("input",e=>applyEditorCommand("foreColor",e.target.value));
   $("#emailHighlightColor").addEventListener("input",e=>applyEditorCommand("hiliteColor",e.target.value));
+  $("#emailFontName").addEventListener("change",e=>{if(e.target.value)applyEditorCommand("fontName",e.target.value);});
+  $("#emailFontSize").addEventListener("change",e=>{if(e.target.value)applyEditorCommand("fontSize",e.target.value);});
+  $("#emailBlockType").addEventListener("change",e=>applyEditorCommand("formatBlock",e.target.value));
   $("#ticketForm").addEventListener("submit", event => {
     event.preventDefault();
     const clientId = $("#ticketClient").value;
