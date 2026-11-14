@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sistema demonstrativo de gerenciamento e atendimento de uma agência bancária.">
+  <title>Agência Bancária - Sistema</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f1f4f7; font-family: Arial, sans-serif; color: #172b3b; }
+    header { background: #123b32; color: white; padding: 22px; }
+    header h2 { margin: 0; }
+    nav { display: flex; gap: 8px; flex-wrap: wrap; background: white; padding: 12px; }
+    button { border: 0; border-radius: 7px; padding: 11px 15px; background: #147b58; color: white; cursor: pointer; }
+    button:hover { opacity: .85; }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #80c9a8; outline-offset: 2px; }
+    main { max-width: 1100px; margin: 25px auto; padding: 15px; }
+    section { display: none; background: white; padding: 22px; border-radius: 12px; margin-bottom: 15px; }
+    section.active { display: block; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+    .card { background: #eaf4ef; padding: 18px; border-radius: 10px; }
+    input, select { width: 100%; padding: 12px; margin: 7px 0 15px; border: 1px solid #ccd5d9; border-radius: 7px; font: inherit; }
+    label { font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    td, th { text-align: left; padding: 10px; border-bottom: 1px solid #ddd; }
+    .small { color: #687782; font-size: 13px; }
+    @media (max-width: 600px) {
+      header { padding: 18px; }
+      nav button { flex: 1 1 calc(50% - 8px); }
+      section { padding: 17px; }
+      td, th { padding: 8px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>🏦 AGÊNCIA BANCÁRIA</h2>
+    <p>Sistema demonstrativo de gerenciamento e atendimento</p>
+  </header>
+
+  <nav aria-label="Navegação principal">
+    <button type="button" onclick="show('inicio')">Painel</button>
+    <button type="button" onclick="show('cadastro')">Clientes</button>
+    <button type="button" onclick="show('atendimento')">Atendimento</button>
+    <button type="button" onclick="show('historico')">Histórico</button>
+    <button type="button" onclick="show('admin')">Administração</button>
+  </nav>
+
+  <main>
+    <section id="inicio" class="active">
+      <h2>Painel principal</h2>
+      <div class="cards">
+        <div class="card"><h3 id="total">0</h3>Clientes cadastrados</div>
+        <div class="card"><h3 id="protocolos">0</h3>Atendimentos</div>
+        <div class="card"><h3>9</h3>Setores disponíveis</div>
+      </div>
+      <h3>Bem-vindo à agência!</h3>
+      <p class="small">Gerencie os cadastros e atendimentos fictícios nesta plataforma.</p>
+    </section>
+
+    <section id="cadastro">
+      <h2>Cadastro de clientes fictícios</h2>
+      <label for="nome">Nome completo</label>
+      <input id="nome" placeholder="Nome do cliente" autocomplete="name">
+      <label for="email">E-mail</label>
+      <input id="email" type="email" placeholder="email@exemplo.com" autocomplete="email">
+      <label for="telefone">Telefone</label>
+      <input id="telefone" type="tel" placeholder="Telefone" autocomplete="tel">
+      <button type="button" onclick="cadastrar()">Cadastrar cliente</button>
+      <p id="cadastroMsg" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="atendimento">
+      <h2>Central de atendimento</h2>
+      <label for="cliente">Cliente</label>
+      <select id="cliente"><option value="">Selecione um cliente</option></select>
+      <label for="setor">Setor</label>
+      <select id="setor">
+        <option>Abertura de conta</option>
+        <option>Consulta de saldo (simulação)</option>
+        <option>Pix e transferências (orientação)</option>
+        <option>Cartões</option>
+        <option>Empréstimos</option>
+        <option>Financiamentos</option>
+        <option>Contestação</option>
+        <option>Suporte técnico</option>
+        <option>Atendimento geral</option>
+      </select>
+      <label for="descricao">Descrição da solicitação</label>
+      <input id="descricao" placeholder="Descreva o motivo do atendimento">
+      <button type="button" onclick="atender()">Gerar protocolo</button>
+      <div id="resultado" aria-live="polite"></div>
+    </section>
+
+    <section id="historico">
+      <h2>Histórico de atendimentos</h2>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr><th>Protocolo</th><th>Cliente</th><th>Setor</th><th>Data</th></tr>
+          </thead>
+          <tbody id="lista"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="admin">
+      <h2>Painel administrativo</h2>
+      <p>Resumo dos registros desta demonstração.</p>
+      <div class="cards">
+        <div class="card"><h3 id="adminClientes">0</h3>Clientes</div>
+        <div class="card"><h3 id="adminAtendimentos">0</h3>Protocolos</div>
+      </div>
+      <h3>Pesquisar cliente</h3>
+      <input id="pesquisa" placeholder="Digite um nome" oninput="listarClientes()">
+      <div id="clientesLista"></div>
+    </section>
+  </main>
+
+  <script>
+    let clientes = JSON.parse(localStorage.getItem('clientes_demo') || '[]');
+    let atendimentos = JSON.parse(localStorage.getItem('atendimentos_demo') || '[]');
+
+    function salvar() {
+      localStorage.setItem('clientes_demo', JSON.stringify(clientes));
+      localStorage.setItem('atendimentos_demo', JSON.stringify(atendimentos));
+      atualizar();
+    }
+
+    function show(id) {
+      document.querySelectorAll('main section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      atualizar();
+    }
+
+    function cadastrar() {
+      const n = document.getElementById('nome').value.trim();
+      const e = document.getElementById('email').value.trim();
+      const t = document.getElementById('telefone').value.trim();
+
+      if (!n || !e || !t) {
+        alert('Preencha todos os campos.');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
+        alert('E-mail inválido.');
+        return;
+      }
+
+      clientes.push({ id: Date.now(), nome: n, email: e, telefone: t });
+      salvar();
+      document.getElementById('cadastroMsg').textContent = 'Cliente cadastrado com sucesso!';
+      document.getElementById('nome').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('telefone').value = '';
+    }
+
+    function atender() {
+      const id = document.getElementById('cliente').value;
+      const c = clientes.find(x => String(x.id) === id);
+      const setor = document.getElementById('setor').value;
+      const descricao = document.getElementById('descricao').value.trim();
+
+      if (!c) {
+        alert('Selecione um cliente.');
+        return;
+      }
+      if (!descricao) {
+        alert('Descreva a solicitação.');
+        return;
+      }
+
+      const protocolo = 'DEMO-' + Date.now().toString().slice(-8);
+      const data = new Date().toLocaleString('pt-BR');
+      atendimentos.push({ protocolo, cliente: c.nome, setor, descricao, data });
+      salvar();
+
+      document.getElementById('resultado').innerHTML =
+        '<h3>Atendimento registrado!</h3><p>Protocolo: <b>' + escapeHTML(protocolo) +
+        '</b></p><p>Cliente: ' + escapeHTML(c.nome) + '</p><p>Setor: ' +
+        escapeHTML(setor) + '</p><p>Data: ' + escapeHTML(data) + '</p>';
+      document.getElementById('descricao').value = '';
+    }
+
+    function escapeHTML(s) {
+      return String(s).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    function listarClientes() {
+      const q = document.getElementById('pesquisa').value.toLowerCase();
+      document.getElementById('clientesLista').innerHTML = clientes
+        .filter(c => c.nome.toLowerCase().includes(q))
+        .map(c => '<p>' + escapeHTML(c.nome) + ' — ' + escapeHTML(c.email) + '</p>')
+        .join('');
+    }
+
+    function atualizar() {
+      document.getElementById('total').textContent = clientes.length;
+      document.getElementById('protocolos').textContent = atendimentos.length;
+      document.getElementById('adminClientes').textContent = clientes.length;
+      document.getElementById('adminAtendimentos').textContent = atendimentos.length;
+      document.getElementById('cliente').innerHTML =
+        '<option value="">Selecione um cliente</option>' +
+        clientes.map(c => '<option value="' + c.id + '">' + escapeHTML(c.nome) + '</option>').join('');
+      document.getElementById('lista').innerHTML = atendimentos.map(a =>
+        '<tr><td>' + escapeHTML(a.protocolo) + '</td><td>' + escapeHTML(a.cliente) +
+        '</td><td>' + escapeHTML(a.setor) + '</td><td>' + escapeHTML(a.data) + '</td></tr>'
+      ).join('');
+      listarClientes();
+    }
+
+    atualizar();
+  </script>
+</body>
+</html>
